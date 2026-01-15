@@ -80,6 +80,8 @@ Vagrant.configure("2") do |config|
     wget https://www.tooplate.com/zip-templates/2153_fireworks_composer.zip
     unzip -o 2153_fireworks_composer.zip
     cp -r 2153_fireworks_composer/* /var/www/html/
+    systemctl disable firewalld
+    systemctl stop firewalld
     systemctl restart httpd
     cd /tmp/
     rm -rf /tmp/fireworks-composer
