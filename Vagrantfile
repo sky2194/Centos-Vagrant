@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-   config.vm.network "private_network", ip: "192.168.56.15"
+   config.vm.network "private_network", ip: "192.168.56.18"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -70,9 +70,19 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
+   config.vm.provision "shell", inline: <<-SHELL
+   yum update -y
+   yum install -y httpd unzip zip wget git
+   systemctl enable httpd
+   systemctl start httpd
+   mkdir -p /tmp/fireworks-composer
+    cd /tmp/fireworks-composer 
+    wget https://www.tooplate.com/zip-templates/2153_fireworks_composer.zip
+    unzip -o 2153_fireworks_composer.zip
+    cp -r 2153_fireworks_composer/* /var/www/html/
+    systemctl restart httpd
+    cd /tmp/
+    rm -rf /tmp/fireworks-composer
+    SHELL
   end
 end
